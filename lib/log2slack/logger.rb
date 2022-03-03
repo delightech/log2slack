@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'slack-notifier'
 module Log
   class LogManager
     attr_reader :messages, :status
@@ -10,10 +11,9 @@ module Log
       @status = 'INFO'
     end
 
-    # TODO ログ通知にタイムスタンプ入れたい
     def log(message, level: :info, notify: false)
       @logger.send(level, message)
-      @messages.push("[#{level.to_s.upcase}]#{message}") if notify
+      @messages.push("#{Time.now} [#{level.to_s.upcase}]#{message}") if notify
       @status = level.to_s.upcase if level == :error
       # Do not overwrite with warn in case of error
       @status = level.to_s.upcase if level == :warn && @status != 'ERROR'
@@ -31,8 +31,28 @@ module Log
       log(message, level: :error, notify: notify)
     end
 
-    def aaa
-      # TODO messagesを改行でJOINしてSlack通知をブロックで渡せるようにする
+    def notify_to_slack(webhook_url, channel, user_name, title)
+      message = @messages.join("\n")
+      if @status == 'ERROR'
+        title = "<!channel> #{title}"
+        color = 'danger'
+      elsif @status == 'WARN'
+        title = "<!channel> #{title}"
+        color = 'warning'
+      else
+        color = 'good'
+      end
+      attachments = {
+        fallback: title,
+        title: title,
+        text: message,
+        color: color
+      }
+      Slack::Notifier.new(
+        webhook_url,
+        channel: channel,
+        username: user_name
+      ).post(attachments: attachments)
     end
   end
 end
