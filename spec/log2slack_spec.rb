@@ -6,6 +6,20 @@ RSpec.describe Log2slack do
   end
 
   it "does something useful" do
-    expect(false).to eq(true)
+    l = Log2slack::Logger.new
+    l.info('abc')
+    expect(l.messages).to eq([])
+    l.info('info test', notify: true)
+    expect(l.status).to eq("INFO")
+    expect(l.messages).to eq(["[INFO]info test"])
+    l.warn('warn test', notify: true)
+    expect(l.status).to eq("WARN")
+    expect(l.messages).to eq(["[INFO]info test","[WARN]warn test"])
+    l.error('error test', notify: true)
+    expect(l.status).to eq("ERROR")
+    expect(l.messages).to eq(["[INFO]info test","[WARN]warn test","[ERROR]error test"])
+    l.info('info test2', notify: true)
+    expect(l.status).to eq("ERROR")
+    expect(l.messages).to eq(["[INFO]info test","[WARN]warn test","[ERROR]error test","[INFO]info test2"])
   end
 end

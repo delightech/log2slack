@@ -2,18 +2,19 @@
 
 require 'logger'
 require 'slack-notifier'
-module Log
-  class LogManager
+module Log2slack
+  class Logger
     attr_reader :messages, :status
     def initialize
-      @logger = Logger.new(STDOUT)
+      # load logger module
+      @logger = ::Logger.new(STDOUT)
       @messages = []
       @status = 'INFO'
     end
 
     def log(message, level: :info, notify: false)
       @logger.send(level, message)
-      @messages.push("#{Time.now} [#{level.to_s.upcase}]#{message}") if notify
+      @messages.push("[#{level.to_s.upcase}]#{message}") if notify
       @status = level.to_s.upcase if level == :error
       # Do not overwrite with warn in case of error
       @status = level.to_s.upcase if level == :warn && @status != 'ERROR'
