@@ -5,7 +5,7 @@ RSpec.describe Log2slack do
     expect(Log2slack::VERSION).not_to be nil
   end
 
-  it "does something useful" do
+  it "log and status check" do
     l = Log2slack::Logger.new
     l.info('abc')
     expect(l.messages).to eq([])
@@ -21,5 +21,13 @@ RSpec.describe Log2slack do
     l.info('info test2', notify: true)
     expect(l.status).to eq("ERROR")
     expect(l.messages).to eq(["[INFO]info test","[WARN]warn test","[ERROR]error test","[INFO]info test2"])
+  end
+  it "log and status check" do
+    l = Log2slack::Logger.new
+    l.info('info test', notify: true)
+    #webhook_url = 'your webhook url'
+    #channel = '#general'
+    #l.notify_to_slack(webhook_url,channel,'test user','test title')
+    expect(true).to eq(true)
   end
 end
