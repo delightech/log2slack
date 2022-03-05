@@ -5,6 +5,7 @@ require 'slack-notifier'
 module Log2slack
   class Logger
     attr_reader :messages, :status
+
     def initialize
       # load logger module
       @logger = ::Logger.new(STDOUT)
@@ -42,7 +43,7 @@ module Log2slack
       else
         color = 'good'
       end
-      {attachments: {
+      { attachments: {
           fallback: title,
           title: title,
           text: @messages.join("\n"),
@@ -53,10 +54,10 @@ module Log2slack
 
     def notify_to_slack(webhook_url, channel, user_name, title)
       args = if block_given?
-        yield()
-      else
-        make_attachments(title)
-      end
+               yield()
+             else
+               make_attachments(title)
+             end
       @notifier = Slack::Notifier.new(
         webhook_url,
         channel: channel,
