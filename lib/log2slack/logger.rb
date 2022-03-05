@@ -42,13 +42,13 @@ module Log2slack
       else
         color = 'good'
       end
-      attachments = {
-        fallback: title,
-        title: title,
-        text: @messages.join("\n"),
-        color: color
+      {attachments: {
+          fallback: title,
+          title: title,
+          text: @messages.join("\n"),
+          color: color
+        }
       }
-      {attachments: attachments}
     end
 
     def notify_to_slack(webhook_url, channel, user_name, title)

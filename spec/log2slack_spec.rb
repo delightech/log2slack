@@ -26,7 +26,7 @@ RSpec.describe Log2slack do
     l = Log2slack::Logger.new
     l.info('info test', notify: true)
     #webhook_url = 'your webhook url'
-    #channel = '#alert'
+    #channel = '#general'
     #l.notify_to_slack(webhook_url,channel,'test user','test title')
     expect(true).to eq(true)
   end
@@ -34,7 +34,7 @@ RSpec.describe Log2slack do
     l = Log2slack::Logger.new
     l.info('info test', notify: true)
     #webhook_url = 'your webhook url'
-    #channel = '#alert'
+    #channel = '#general'
     #l.notify_to_slack(webhook_url,channel,'test user','test title') do
     #  {text: 'test text!'}
     #end
