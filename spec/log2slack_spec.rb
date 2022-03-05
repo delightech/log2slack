@@ -22,12 +22,22 @@ RSpec.describe Log2slack do
     expect(l.status).to eq("ERROR")
     expect(l.messages).to eq(["[INFO]info test","[WARN]warn test","[ERROR]error test","[INFO]info test2"])
   end
-  it "log and status check" do
+  it "send to slack" do
     l = Log2slack::Logger.new
     l.info('info test', notify: true)
     #webhook_url = 'your webhook url'
-    #channel = '#general'
+    #channel = '#alert'
     #l.notify_to_slack(webhook_url,channel,'test user','test title')
+    expect(true).to eq(true)
+  end
+  it "send to slack with block" do
+    l = Log2slack::Logger.new
+    l.info('info test', notify: true)
+    #webhook_url = 'your webhook url'
+    #channel = '#alert'
+    #l.notify_to_slack(webhook_url,channel,'test user','test title') do
+    #  {text: 'test text!'}
+    #end
     expect(true).to eq(true)
   end
 end

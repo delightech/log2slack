@@ -32,8 +32,7 @@ module Log2slack
       log(message, level: :error, notify: notify)
     end
 
-    def notify_to_slack(webhook_url, channel, user_name, title)
-      message = @messages.join("\n")
+    def make_attachments(title)
       if @status == 'ERROR'
         title = "<!channel> #{title}"
         color = 'danger'
@@ -46,14 +45,24 @@ module Log2slack
       attachments = {
         fallback: title,
         title: title,
-        text: message,
+        text: @messages.join("\n"),
         color: color
       }
-      Slack::Notifier.new(
+      {attachments: attachments}
+    end
+
+    def notify_to_slack(webhook_url, channel, user_name, title)
+      args = if block_given?
+        yield()
+      else
+        make_attachments(title)
+      end
+      @notifier = Slack::Notifier.new(
         webhook_url,
         channel: channel,
         username: user_name
-      ).post(attachments: attachments)
+      ) if @notifier.nil?
+      @notifier.post(args)
     end
   end
 end
