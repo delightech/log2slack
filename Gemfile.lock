@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     log2slack (0.1.0)
+      slack-notifier (~> 2.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -44,6 +45,7 @@ GEM
     unicode-display_width (2.1.0)
 
 PLATFORMS
+  arm64-darwin-20
   x86_64-darwin-19
 
 DEPENDENCIES
