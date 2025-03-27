@@ -1,6 +1,6 @@
 # Log2slack
 
-[![Gem Version](https://badge.fury.io/rb/log2slack.svg)](https://badge.fury.io/rb/log2slack)
+[![Gem Version](https://badge.fury.io/rb/log2slack.svg)](https://badge.fury.io/rb/log2slack?v=0.1.2)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
 
 Log2slack is a simple Ruby gem for recording application log messages and notifying them to Slack. It allows you to easily send logs generated from batch processes, web applications, and other systems to Slack channels.
