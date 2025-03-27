@@ -8,7 +8,7 @@ module Log2slack
     LOG_LEVEL_INFO = 'INFO'
     LOG_LEVEL_WARN = 'WARN'
     LOG_LEVEL_ERROR = 'ERROR'
-    
+
     attr_reader :messages, :status
 
     # Initialize a new Logger instance
@@ -70,13 +70,14 @@ module Log2slack
     # @param title [String] The title for the Slack message
     # @return [Hash] The attachment payload
     def make_attachments(title)
-      { attachments: {
+      { attachments: [
+        {
           fallback: format_title(title),
           title: format_title(title),
           text: @messages.join("\n"),
           color: status_color
         }
-      }
+      ] }
     end
 
     # Format the title based on the current status
@@ -120,15 +121,17 @@ module Log2slack
              else
                make_attachments(title)
              end
-      @notifier = Slack::Notifier.new(
-        webhook_url,
-        channel: channel,
-        username: user_name
-      ) if @notifier.nil?
-      
+      if @notifier.nil?
+        @notifier = Slack::Notifier.new(
+          webhook_url,
+          channel: channel,
+          username: user_name
+        )
+      end
+
       begin
         @notifier.post(args)
-      rescue => e
+      rescue StandardError => e
         @logger.error("Failed to send notification to Slack: #{e.message}")
         raise Log2slack::Error, "Slack notification failed: #{e.message}"
       end
